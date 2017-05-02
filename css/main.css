@@ -1,0 +1,92 @@
+@font-face {
+    font-family: "Amatic SC";
+    src: url("../fonts/AmaticSC-Bold.ttf");
+}
+body {
+  width: 720px;
+  padding: 10px 10px 10px 10px;
+  margin-left:auto;
+  margin-right:auto;
+  /* bg */
+  background-color: #e6e6e6;
+  /* font */
+  font-family: "Amatic SC";
+  font-style: normal;
+  font-variant: normal;
+}
+hr {
+  border: none;
+  border-top:1px dotted grey;
+  width:100%;
+}
+select, input {
+  margin-top: 5px;
+  text-align-last: center;
+  width: 130px;
+}
+input {
+  border-radius: 3px;
+  border-width: 0px;
+  background-color: white;
+}
+#content-wrap {
+  width: 700px;
+  padding: 10px 10px 10px 10px;
+  background-color: #EAEDED;
+  border: 1px dotted gray;
+  border-radius: 10px;
+  /* for IE */
+  filter: alpha(opacity=80);
+  /* CSS3 standard */
+  opacity:0.8;
+}
+#header-wrap {
+  margin-left: auto;
+  margin-right: auto;
+  width: 400px;
+}
+#version {
+  align: right;
+}
+#main-wrap {
+  overflow:hidden; /* cancel float in child*/
+  margin-left: auto;
+  margin-right: auto;
+  width: 690px;
+}
+#simu-left, #simu-mid, #simu-right{
+}
+#simu-shaft, #simu-passenger {
+}
+#simu-box {
+  /*background-color: white;*/
+  width: 100px;
+}
+#simu-panel {
+}
+#foot-wrap {
+  margin-left: auto;
+  margin-right: auto;
+}
+.elev, .wait{
+  height: 20px;
+  margin: 0px 5px 2px 5px;
+}
+.elev {
+  background-color: #cccccc;
+  width: 20px;
+  text-align: center;
+}
+.wait {
+  background-color: #cccccc;
+  width: 200px;
+}
+.simu-board {
+  padding: 10px;
+}
+.div-row {
+  margin-left: auto;
+  margin-right: auto;
+  float: left;
+  display: inline;
+}
