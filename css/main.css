@@ -56,7 +56,7 @@ input {
 }
 #simu-left, #simu-mid, #simu-right{
 }
-#simu-shaft, #simu-passenger {
+#simu-shaft, #simu-waitlist {
 }
 #simu-box {
   /*background-color: white;*/
@@ -68,14 +68,20 @@ input {
   margin-left: auto;
   margin-right: auto;
 }
-.elev, .wait{
+.elev-on, .elev-off, .wait {
   height: 20px;
   margin: 0px 5px 2px 5px;
+  border-radius: 3px;
 }
-.elev {
-  background-color: #cccccc;
-  width: 20px;
+.elev-on, .elev-off {
+  width: 30px;
   text-align: center;
+}
+.elev-on {
+  background-color: #1199ee;
+}
+.elev-off {
+  background-color: #cccccc;
 }
 .wait {
   background-color: #cccccc;
