@@ -15,7 +15,7 @@ var Util = {
     return this.sin((x * 1.5 + 1) * this.pi);
   },
 
-  randPersonId: function(range) {
+  randNum: function(range) {
     return this.round(range * this.random());
   },
 
