@@ -2,11 +2,13 @@ var Model = {
   height: 0, // height of the building
   elevator: null, // list of indiv
   waitlist: null, // list of waiting indiv
+  personList: null,
 
-  init: function(h, elev, wait) {
+  init: function(h, elev, reqls, pls) {
     Model.height = h;
     Model.elevator = elev;
-    Model.waitlist = wait;
+    Model.reqList = reqls;
+    Model.personList = pls;
   },
 
   getHeight: function() {
@@ -25,53 +27,56 @@ var Model = {
     Model.elevator = elev;
   },
 
-  getWaitlist: function() {
-    return Model.waitlist;
+  getReqlist: function() {
+    return Model.reqList;
   },
 
-  setWaitlist: function(waitls) {
-    Model.waitlist = waitls;
+  setReqlist: function(reqls) {
+    Model.reqList = reqls;
+  },
+
+  getPersonList: function() {
+    return Model.personList;
+  },
+
+  setPersonList: function(pls) {
+    Model.personList = pls;
   }
-}
-
-var IndivModel = {
-  
-  name: null,
-
-  curFloor: null,
-
-  destFloor: null,
-
-  getCurFloor: function() { return indivModel.curFloor; },
-
-  getDestFloor: function() { return indivModel.destFloor; },
-
-  setCurFloor: function(cur) { indivModel.curFloor = cur; },
-
-  setDestFloor: function(dest) { indivModel.destFloor = dest; }
 
 }
 
-var ElevModel = function(floor, curDir, indivLs) {
+var PersonModel = function(id, name, cur, dest) {
+
+  this.id = id,
+
+  this.name = name,
+
+  this.curFloor = cur,
+
+  this.destFloor = dest
+
+}
+
+var ElevModel = function(floor, curDir, idLs) {
 
   this.floor = floor,
   
   this.curDir = curDir,
   
-  this.indivList = indivLs,
+  this.idList = idLs,
 
-  this.getIndivList = function() {
-    return elevatorModel.indivList;
+  this.getIdList = function() {
+    return this.idList;
   },
 
-  this.addIndiv = function(inidv) {
-    if (! indivList) { indivList = []; }
-    inidvList[indivList.size()] = indiv;
+  this.addId = function(id) {
+    if (! idList) { idList = []; }
+    idList[idList.size()] = id;
   },
 
-  this.rmIndivFromList = function(inidv) {
-    if (! indivList) { console.log("Error: indiv list is empty."); }
-    indivList.remove(indiv);
+  this.rmIdFromList = function(id) {
+    if (! idList) { console.log("Error: person list is empty."); }
+    idList.remove(id);
   },
 
   this.getFloor = function() {

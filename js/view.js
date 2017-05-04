@@ -17,6 +17,7 @@ var ShaftView = {
       var cell = document.createElement("div");
       cell.innerHTML = "F" + (height - i + 1);
       cell.id = "elev_" + (height - i + 1);
+      cell.className = "elev-off";
       shaft.appendChild(cell);
     }
   }

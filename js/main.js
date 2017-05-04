@@ -1,15 +1,15 @@
-function handleNextSecBtn() {
-  controllor.nextSec();
+function handleRandReqBtn() {
+  controllor.randReq();
 }
 
 function init() {
 
   // create world
-  Controller.initSimu(10);
+  Controller.initSimu(10,5);
 
-  // Generate next state of world
-  // var nextSecBtn = document.getElementById("nextSecBtn");
-  // nextSecBtn.onclick = handleNextSecBtn;
+  // add request
+  var randReqBtn = document.getElementById("randReqBtn");
+  randReqBtn.onclick = handleRandReqBtn;
 
 }
 
