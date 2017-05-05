@@ -1,46 +1,67 @@
 var Model = {
-  height: 0, // height of the building
-  elevator: null, // list of indiv
-  waitlist: null, // list of waiting indiv
-  personList: null,
+  height: 0, // height of the building 
+  personList: null, // PersonModel list. All person store here
+  elevator: null, // ElevModel. store elevator information
+  freeIdList: null, // id list of free person
+  reqList: null, // id list of person with request
+  
 
-  init: function(h, elev, reqls, pls) {
+  init: function(h, elev, pls, reqLs, freeIdLs) {
     Model.height = h;
     Model.elevator = elev;
-    Model.reqList = reqls;
     Model.personList = pls;
+    Model.reqList = reqLs;
+    Model.freeIdList = freeIdLs;
   },
-
+  
+  // height
   getHeight: function() {
     return Model.height;
   },
-
   setHeight: function(h) {
     Model.height = h;
   },
 
+  // elevator
   getElevator: function() {
     return Model.elevator;
   },
-
   setElevator: function(elev) {
     Model.elevator = elev;
   },
 
+  // req list
   getReqlist: function() {
     return Model.reqList;
   },
-
-  setReqlist: function(reqls) {
-    Model.reqList = reqls;
+  addIdToReqLs: function(id) {
+    Model.reqList.push(id);
+    console.log("req list: ", Model.reqList);
   },
 
+  // person list
   getPersonList: function() {
     return Model.personList;
   },
-
   setPersonList: function(pls) {
     Model.personList = pls;
+  },
+  getFreePerson: function() {
+    var ind = Util.randNum(Model.freeIdList.length);
+    return Model.personList[ind];
+  },
+
+  // free list
+  getFreeIds: function() {
+    return Model.freeIdList;
+  },
+  rmFromFreeLs: function(id) {
+    var ind = Model.freeIdList.indexOf(id);
+    Model.freeIdList.splice(ind, 1);
+    console.log("free list: ", Model.freeIdList);
+  },
+  emptyFreeList: function() {
+    return Model.freeIdList.length == 0;
   }
 
 }
@@ -53,7 +74,31 @@ var PersonModel = function(id, name, cur, dest) {
 
   this.curFloor = cur,
 
-  this.destFloor = dest
+  this.destFloor = dest,
+
+  this.getId = function() {
+    return this.id;
+  },
+
+  this.getName = function() {
+    return this.name;
+  },
+
+  this.getCurFloor = function() {
+    return this.curFloor;
+  },
+
+  this.setCurFloor = function(f) {
+    this.curFloor = f;
+  },
+
+  this.getDestFloor = function() {
+    return this.getDestFloor();
+  },
+
+  this.setDestFloor = function(f) {
+    this.destFloor = f;
+  }
 
 }
 

@@ -1,4 +1,5 @@
 var ShaftView = {
+
   elevOn: function(at, objName) {
     var id = objName + "_" + at;
     var elem = document.getElementById(id);
@@ -11,7 +12,7 @@ var ShaftView = {
     elem.setAttribute("class", "elev-off");
   },
 
-  genElev: function(height) {
+  genShaft: function(height) {
     var shaft = document.getElementById("simu-shaft");
     for (var i = 1; i <= height; i ++) {
       var cell = document.createElement("div");
@@ -24,9 +25,9 @@ var ShaftView = {
 
 }
 
-var WaitlistView = {
+var WaitView = {
 
-  genWaitlist: function(height) {
+  genWaitingArea: function(height) {
     var waitlist = document.getElementById("simu-waitlist");
     for (var i = 1; i <= height; i ++) {
       var cell = document.createElement("div");
@@ -34,6 +35,15 @@ var WaitlistView = {
       cell.className = "wait";
       waitlist.appendChild(cell);
     }
+  },
+
+  addPersonWaitArea: function(person) {
+    var waitArea = document.getElementById("wait_f_" + person.getCurFloor());
+    var p = document.createElement("div");
+    p.id = "id_" + person.getId();
+    p.className = "wait-person div-row";
+    p.innerHTML = person.getName();
+    waitArea.appendChild(p);
   }
 
 }

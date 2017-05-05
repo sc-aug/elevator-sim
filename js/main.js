@@ -1,5 +1,9 @@
 function handleRandReqBtn() {
-  controllor.randReq();
+  Controller.oneRandReq();
+}
+
+function handleOneStepBtn() {
+  Controller.oneStep();
 }
 
 function init() {
@@ -10,6 +14,10 @@ function init() {
   // add request
   var randReqBtn = document.getElementById("randReqBtn");
   randReqBtn.onclick = handleRandReqBtn;
+
+  // manual
+  var oneStepBtn = document.getElementById("oneStepBtn");
+  oneStepBtn.onclick = handleOneStepBtn;
 
 }
 
