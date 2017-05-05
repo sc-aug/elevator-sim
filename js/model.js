@@ -47,8 +47,10 @@ var Model = {
     Model.personList = pls;
   },
   getFreePerson: function() {
+    var pls = Model.personList;
+    var fls = Model.freeIdList;
     var ind = Util.randNum(Model.freeIdList.length);
-    return Model.personList[ind];
+    return pls[fls[ind]];
   },
 
   // free list

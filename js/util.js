@@ -1,6 +1,8 @@
 var Util = {
   pi: Math.PI,
 
+  ceil: Math.ceil,
+
   floor: Math.floor,
 
   sin: Math.sin,
@@ -16,7 +18,7 @@ var Util = {
   },
 
   randFollowDistr: function(range) {
-    return this.floor(range/2 * this.distrFunc(this.random()) + range/2);
+    return this.ceil(range/2 * this.distrFunc(this.random()) + range/2);
   },
 
   distrFunc: function(x) {
