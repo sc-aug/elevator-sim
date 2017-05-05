@@ -1,7 +1,3 @@
-@font-face {
-    font-family: "Amatic SC";
-    src: url("../fonts/AmaticSC-Bold.ttf");
-}
 body {
   width: 720px;
   padding: 10px 10px 10px 10px;
@@ -10,7 +6,7 @@ body {
   /* bg */
   background-color: #e6e6e6;
   /* font */
-  font-family: "Amatic SC";
+  font-family: Consolas, monaco, monospace;
   font-style: normal;
   font-variant: normal;
 }
@@ -68,6 +64,13 @@ input {
   margin-left: auto;
   margin-right: auto;
 }
+.simu-board {
+  padding: 10px;
+}
+.div-row {
+  float: left;
+  display: inline;
+}
 .elev-on, .elev-off, .wait {
   height: 20px;
   margin: 0px 5px 2px 5px;
@@ -85,14 +88,15 @@ input {
 }
 .wait {
   background-color: #cccccc;
-  width: 200px;
+  width: 300px;
 }
-.simu-board {
-  padding: 10px;
-}
-.div-row {
-  margin-left: auto;
-  margin-right: auto;
-  float: left;
-  display: inline;
+.wait-person {
+  background-color: white;
+  height: 16px;
+  padding: 0px 2px 0px 2px;
+  margin: 0px 1px 0px 1px;
+  text-align: center;
+  vertical-align: middle;
+  border-radius: 2px;
+  font-size: 10px;
 }
