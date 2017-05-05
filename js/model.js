@@ -1,3 +1,8 @@
+var DirEnum = {
+  UP: true,
+  DOWN: false,
+};
+
 var Model = {
   height: 0, // height of the building 
   personList: null, // PersonModel list. All person store here
@@ -66,7 +71,7 @@ var Model = {
     return Model.freeIdList.length == 0;
   }
 
-}
+};
 
 var PersonModel = function(id, name, cur, dest) {
 
@@ -102,7 +107,7 @@ var PersonModel = function(id, name, cur, dest) {
     this.destFloor = f;
   }
 
-}
+};
 
 var ElevModel = function(floor, curDir, idLs) {
 
@@ -134,7 +139,5 @@ var ElevModel = function(floor, curDir, idLs) {
     this.floor = f;
   }
 
-}
-
-
+};
 

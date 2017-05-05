@@ -51,7 +51,7 @@ var Controller = {
     }
 
     //init elev
-    elev = new ElevModel(1, true, inElevIdLs);
+    elev = new ElevModel(1, DirEnum.UP, inElevIdLs);
     
     //init waitlist
     Model.init(height, elev, personLs, reqLs, freeIdLs);
