@@ -7,7 +7,15 @@ var Util = {
 
   random: Math.random,
   
-  randNum: function(range) {
+  randFloor: function(range, noteq) {
+    var f = randFollowDistr(range);
+    while (f == noteq) {
+      var f = randFollowDistr(range);
+    }
+    return f;
+  },
+
+  randFollowDistr: function(range) {
     return this.round(range/2 * this.distrFunc(this.random()) + range/2);
   },
 
