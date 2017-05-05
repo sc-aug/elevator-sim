@@ -16,22 +16,13 @@ simulate elevator services
 
 ### Iteration 1
 * html/css
-* init simu
+* init simu data
 * init inidividual list
-* random request
-* elevator move
 
 ### Iteration 2
-* two size world
-* next generator
-
-## Iteration 3
-* clean button
-* auto generate
-
-## Iteration 4
-* mouse click add node
-  - on & off switch
+* random request
+* basic logics
+* one step gen
 
 ## Constuction
 * color / theme
