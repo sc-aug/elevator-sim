@@ -1,15 +1,28 @@
 var ShaftView = {
 
   elevOn: function(at, objName) {
-    var id = objName + "_" + at;
+    var id = "elev_" + at;
     var elem = document.getElementById(id);
     elem.setAttribute("class", "elev-on");
   },
 
   elevOff: function(at, objName) {
-    var id = objName + "_" + at;
+    var id = "elev_" + at;
     var elem = document.getElementById(id);
     elem.setAttribute("class", "elev-off");
+  },
+
+  update: function(height, elevAt) {
+    var shaft = document.getElementById("simu-shaft");
+    var cell = null;
+    for (var i = 1; i <= height; i ++) {
+      cell = document.getElementById("elev_" + i);
+      if (i == elevAt) {
+        ShaftView.elevOn(i);
+      } else {
+        ShaftView.elevOff(i);
+      }
+    }
   },
 
   genShaft: function(height) {
@@ -44,6 +57,12 @@ var WaitView = {
     p.className = "wait-person div-row";
     p.innerHTML = person.getName();
     waitArea.appendChild(p);
+  },
+
+  rmPersonFromWaiting: function(floor, name) {
+    var waitArea = document.getElementById("wait_f_" + person.getCurFloor());
+    var p = document.getElementById("id_" + person.getId());
+    waitArea.removeChild(p);
   }
 
 }

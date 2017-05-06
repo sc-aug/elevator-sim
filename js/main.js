@@ -9,7 +9,7 @@ function handleOneStepBtn() {
 function init() {
 
   // create world
-  Controller.initSimu(10,5);
+  Controller.initSimu(10,10);
 
   // add request
   var randReqBtn = document.getElementById("randReqBtn");

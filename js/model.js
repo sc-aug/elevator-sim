@@ -1,6 +1,7 @@
-var DirEnum = {
-  UP: true,
-  DOWN: false,
+var Move = {
+  UP: 1,
+  DOWN: -1,
+  STOP: 0,
 };
 
 var Model = {
@@ -9,7 +10,6 @@ var Model = {
   elevator: null, // ElevModel. store elevator information
   freeIdList: null, // id list of free person
   reqList: null, // id list of person with request
-  
 
   init: function(h, elev, pls, reqLs, freeIdLs) {
     Model.height = h;
@@ -18,6 +18,144 @@ var Model = {
     Model.reqList = reqLs;
     Model.freeIdList = freeIdLs;
   },
+
+  // Leave elevater
+  elevPassLeave: function() {
+    var arriveIdLs = Model.pIdListArrived();
+    console.log("arrived p ID: ", arriveIdLs);
+    Model.elevator.rmIdByArrive(arriveIdLs); // remove id from elevator
+    Model.updateDataForArrive(arriveIdLs); // floor info & add to freelist
+  },
+
+  // Get in elevator
+  elevPassGetIn: function() {
+    var getInIdLs = Model.pIdListGetIn();
+    console.log("get-in p ID: ", getInIdLs);
+    Model.rmReqIdByGetIn(getInIdLs); // remove id from req list.
+  },
+
+  // update elevator move direction
+  updateElevMove: function() {
+    // var pIdInElev = Model.elevator.getIdList();
+    // var reqLs = Model.reqList;
+    // if (! pIdInElev) {
+    //   return;
+    // }
+
+    // if (! reqLs) {
+    //   // if it's on the move
+    //   if (Model.elevator.getMove() != Move.STOP) {
+    //     Model.getDir();
+    //   }
+    //   return;
+    // }
+
+    // Model.elevator.setMove(Move.STOP);
+    // return ;
+  },
+
+  pIdListArrived: function() {
+    return ElevModel.pIdListArrived(Model.personList);
+  },
+
+  // person arrived, change object data
+  updateDataForArrive: function(idLs) {
+    // curFloor = destFloor
+    Model.updatePersonCurFloor(idLs);
+    // add PID to freelist
+    Model.freeListAddIdLs(idLs);
+  },
+
+  updatePersonCurFloor: function(idLs) {
+    var pLs = Model.getPersonList();
+    for (var i = 0; i < idLs.length; i ++) {
+      var p = pLs[idLs[i]];
+      p.setCurFloor(p.getDestFloor());
+    }
+  },
+
+  freeListAddIdLs: function(idLs) {
+    var fLs = Model.freeIdList;
+    for (var i = 0; i < idLs.length; i ++) {
+      if (fLs.indexOf(idLs[i]) == -1) {
+        fLs.push(idLs[i]);
+      }
+    }
+    console.log("FreeLs: ", fLs);
+  },
+
+  pIdListGetIn: function() {
+    var pIdLs = [];
+    var p = Model.getPersonList();
+    var req = Model.getReqList();
+    var f = Model.getElevatorFloor();
+    for (var i = 0; i < req.length; i ++) {
+      if (p[req[i]].getFloor() == f) {
+        pIdLs.push(req[i]);
+      }
+    }
+    return pIdLs;
+  },
+
+  rmReqIdByGetIn: function(getInIdLs) {
+    var req = Model.getReqlist();
+    for (var i = 0; i < getInIdLs.length; i ++) {
+      var ind = req.indexOf(getInIdLs[i]);
+      if (ind >= 0) {
+        req.splice(ind, 1);
+      }
+    }
+  },
+
+  elevStop: function(floor) {
+    if (ifHavePersonArrived()) return true;
+    if (ifAcceptReqCurFloor()) return true;
+    return false;
+  },
+
+  // check if there is person arrived at cur floor
+  ifHavePersonArrived: function() {
+    var pIdLs = Model.pIdListArrived();
+    return (pIdLs) ? true : false;
+  },
+
+  // there might have request at current floor
+  // but if it requesting go down, while the elev is moving upward
+  // the elev won't accept the request
+  ifAcceptReqCurFloor: function() {
+    var accReqLs = Model.requestFilter();
+    return (accReqLs) ? true : false;
+  },
+
+  // accept proper request
+  requestFilter: function() {
+    var elev = Model.elevator;
+    var rLs = Model.reqList;
+    var pLs = Model.personList;
+    var floor = elev.getFloor();
+
+    var acceptPIdLs = [];
+    if (elev.getMove() == Move.STOP) {
+      // when elev is stop
+      // accept all requests
+      for (var i = 0; i < rLs.length; i ++) {
+        if (pLs[rLs[i]].getCurFloor() == floor) {
+          acceptPIdLs.push(rLs[i]);
+        }
+      }
+    } else {
+      // when elev is moving 
+      // accept req with same dir
+      for (var i = 0; i < rLs.length; i ++) {
+        var p = pLs[rLs[i]];
+        if (p.getCurFloor() == floor &&
+           elev.getDir() == p.getReqDir()) {
+          acceptPIdLs.push(rLs[i]);
+        }
+      }
+    }
+    return acceptPIdLs;
+  }
   
   // height
   getHeight: function() {
@@ -33,6 +171,9 @@ var Model = {
   },
   setElevator: function(elev) {
     Model.elevator = elev;
+  },
+  getElevatorFloor:function() {
+    return Model.elevator.getFloor();
   },
 
   // req list
@@ -105,6 +246,12 @@ var PersonModel = function(id, name, cur, dest) {
 
   this.setDestFloor = function(f) {
     this.destFloor = f;
+  },
+
+  this.getReqDir() {
+    if (this.destFloor - this.curFloor > 0) return Move.UP;
+    else if (this.destFloor - this.curFloor < 0) return Move.DOWN;
+    else return Move.STOP;
   }
 
 };
@@ -116,6 +263,53 @@ var ElevModel = function(floor, curDir, idLs) {
   this.curDir = curDir,
   
   this.idList = idLs,
+
+  this.pIdListArrived = function(pLs) {
+    var idLs = [];
+    for (var i = 0; i < this.idList.length; i ++) {
+      var p = pLs[this.idList[i]];
+      if (this.getFloor() == p.getDestFloor()) {
+        idLs.push(this.idList[i]);
+      }
+    }
+    return idLs;
+  },
+
+  this.rmIdByArrive = function(arriveIdLs) {
+    for (var i = 0; i < this.arriveIdLs.length; i ++) {
+      var ind = this.idList.indexOf(arriveIdLs[i]);
+      if (ind >= 0) {
+        // if the id exists
+        // this.idList.splice(ind, 1);  // ????
+        this.rmIdFromList(arriveIdLs[i]);// ????
+      }
+    }
+  },
+
+  this.passengerIn = function(pIdLs) {
+    this.idList.concat(pIdLs);
+  },
+
+  // move one step
+  this.elevMove = function() {
+    this.floor += curDir;
+    // log
+    if (curDir == Move.UP) {
+      console.log("move up ..");
+    } else if (curDir == Move.DOWN) {
+      console.log("move down ..");
+    } else {
+      console.log("stop ..");
+    }
+  },
+
+  this.getMove = function() {
+    return this.curDir;
+  },
+
+  this.setMove = function(move) {
+    this.curDir = move;
+  },
 
   this.getIdList = function() {
     return this.idList;
@@ -139,5 +333,5 @@ var ElevModel = function(floor, curDir, idLs) {
     this.floor = f;
   }
 
-};
+}
 
