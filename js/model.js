@@ -155,7 +155,7 @@ var Model = {
       }
     }
     return acceptPIdLs;
-  }
+  },
   
   // height
   getHeight: function() {
@@ -248,7 +248,7 @@ var PersonModel = function(id, name, cur, dest) {
     this.destFloor = f;
   },
 
-  this.getReqDir() {
+  this.getReqDir = function() {
     if (this.destFloor - this.curFloor > 0) return Move.UP;
     else if (this.destFloor - this.curFloor < 0) return Move.DOWN;
     else return Move.STOP;
