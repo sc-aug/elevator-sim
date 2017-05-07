@@ -31,6 +31,7 @@ var Model = {
   elevPassGetIn: function() {
     var getInIdLs = Model.pIdListGetIn();
     console.log("get-in p ID: ", getInIdLs);
+    Model.addIdToElev(getInIdLs);
     Model.rmReqIdByGetIn(getInIdLs); // remove id from req list.
   },
 
@@ -55,7 +56,8 @@ var Model = {
   },
 
   pIdListArrived: function() {
-    return ElevModel.pIdListArrived(Model.personList);
+    var elev = Model.elevator;
+    return elev.pIdListArrived(Model.personList);
   },
 
   // person arrived, change object data
@@ -85,16 +87,11 @@ var Model = {
   },
 
   pIdListGetIn: function() {
-    var pIdLs = [];
-    var p = Model.getPersonList();
-    var req = Model.getReqList();
-    var f = Model.getElevatorFloor();
-    for (var i = 0; i < req.length; i ++) {
-      if (p[req[i]].getFloor() == f) {
-        pIdLs.push(req[i]);
-      }
-    }
-    return pIdLs;
+    return Model.requestFilter();
+  },
+
+  addIdToElev: function(idLs) {
+    Model.elevator.addIdLs(idLs);
   },
 
   rmReqIdByGetIn: function(getInIdLs) {
@@ -108,15 +105,15 @@ var Model = {
   },
 
   elevStop: function(floor) {
-    if (ifHavePersonArrived()) return true;
-    if (ifAcceptReqCurFloor()) return true;
+    if (Model.ifHavePersonArrived()) return true;
+    if (Model.ifAcceptReqCurFloor()) return true;
     return false;
   },
 
   // check if there is person arrived at cur floor
   ifHavePersonArrived: function() {
     var pIdLs = Model.pIdListArrived();
-    return (pIdLs) ? true : false;
+    return (pIdLs.length != 0) ? true : false;
   },
 
   // there might have request at current floor
@@ -124,7 +121,7 @@ var Model = {
   // the elev won't accept the request
   ifAcceptReqCurFloor: function() {
     var accReqLs = Model.requestFilter();
-    return (accReqLs) ? true : false;
+    return (accReqLs.length != 0) ? true : false;
   },
 
   // accept proper request
@@ -241,7 +238,7 @@ var PersonModel = function(id, name, cur, dest) {
   },
 
   this.getDestFloor = function() {
-    return this.getDestFloor();
+    return this.destFloor;
   },
 
   this.setDestFloor = function(f) {
@@ -276,7 +273,7 @@ var ElevModel = function(floor, curDir, idLs) {
   },
 
   this.rmIdByArrive = function(arriveIdLs) {
-    for (var i = 0; i < this.arriveIdLs.length; i ++) {
+    for (var i = 0; i < arriveIdLs.length; i ++) {
       var ind = this.idList.indexOf(arriveIdLs[i]);
       if (ind >= 0) {
         // if the id exists
@@ -315,9 +312,15 @@ var ElevModel = function(floor, curDir, idLs) {
     return this.idList;
   },
 
+  this.addIdLs = function(idLs) {
+    for (var i = 0; i < idLs.length; i ++) {
+      this.addId(idLs[i]);
+    }
+  },
+
   this.addId = function(id) {
-    if (! idList) { idList = []; }
-    idList[idList.size()] = id;
+    if (! this.idList) { this.idList = []; }
+    this.idList[this.idList.length] = id;
   },
 
   this.rmIdFromList = function(id) {

@@ -30,6 +30,6 @@ var Util = {
   },
 
   genName: function(id) {
-    return Sha1.hash(id).substring(0,5);
+    return Sha1.hash(id).substring(0,3);
   }
 }

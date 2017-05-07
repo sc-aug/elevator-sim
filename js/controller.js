@@ -4,33 +4,30 @@ var Controller = {
     var elev = Model.elevator;
     //var reqLs = Model.reqList;
 
+    // ERROR if elevator move, the view need change
     // elev move one stop
     elev.elevMove();
     var floor = elev.getFloor();
     // does elev need to stop ?
-    if (Model.elevStop(floor)) {
-      // once elevator stop, it provides 1 unit time
-      // person in & out use 1 unit time.
-      
-      // open door
-      // person leave
-      Controller.elevPassLeave();
-      // add req
-      Controller.oneRandReq();
-      // update waitlist
-      // person come in
-      Controller.elevPassGetIn();
-      // decide direction for next step
-      
-      // update waitlist
-      Controller.showWaitlist();
-    }
+    // Model.elevStop(floor);
+    // once elevator stop, it provides 1 unit time
+    // person in & out use 1 unit time.
+    
+    // open door
+    // person leave
+    Controller.elevPassLeave();
+    // add req
+    Controller.oneRandReq();
+    // update waitlist
+    // person come in
+    Controller.elevPassGetIn();
 
     Model.updateElevMove();
   },
 
   oneRandReq: function() {
 
+    // no people left for requesting
     if (Model.emptyFreeList()) return;
 
     var height = Model.getHeight();
@@ -67,7 +64,7 @@ var Controller = {
     // logic
     Model.elevPassGetIn();
     // view
-    Model.updateViewWaiting(p, getInIdLs, f);
+    Controller.updateViewRmWaiting(p, getInIdLs);
   },
 
   // init simulation
@@ -100,9 +97,9 @@ var Controller = {
     WaitView.genWaitingArea(height);
   },
 
-  updateViewWaiting: function(p, arriveIdLs, f) {
+  updateViewRmWaiting: function(pLs, arriveIdLs) {
     for (var i = 0; i < arriveIdLs.length; i ++) {
-      WaitView.rmPersonFromWaiting(f, p[i].getName());
+      WaitView.rmPersonFromWaiting(pLs[arriveIdLs[i]]);
     }
   }
 
