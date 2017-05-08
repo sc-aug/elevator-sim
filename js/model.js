@@ -35,24 +35,17 @@ var Model = {
     Model.rmReqIdByGetIn(getInIdLs); // remove id from req list.
   },
 
+  elevMove: function() {
+    Model.elevator.move();
+  },
+
   // update elevator move direction
   updateElevMove: function() {
-    // var pIdInElev = Model.elevator.getIdList();
-    // var reqLs = Model.reqList;
-    // if (! pIdInElev) {
-    //   return;
-    // }
-
-    // if (! reqLs) {
-    //   // if it's on the move
-    //   if (Model.elevator.getMove() != Move.STOP) {
-    //     Model.getDir();
-    //   }
-    //   return;
-    // }
-
-    // Model.elevator.setMove(Move.STOP);
-    // return ;
+    var e = Model.elevator;
+    var ls = Model.requestFilter();
+    if (e.isEmpty() && ls.length == 0) {
+      e.setDir(Move.STOP);
+    }
   },
 
   pIdListArrived: function() {
@@ -104,26 +97,6 @@ var Model = {
     }
   },
 
-  elevStop: function(floor) {
-    if (Model.ifHavePersonArrived()) return true;
-    if (Model.ifAcceptReqCurFloor()) return true;
-    return false;
-  },
-
-  // check if there is person arrived at cur floor
-  ifHavePersonArrived: function() {
-    var pIdLs = Model.pIdListArrived();
-    return (pIdLs.length != 0) ? true : false;
-  },
-
-  // there might have request at current floor
-  // but if it requesting go down, while the elev is moving upward
-  // the elev won't accept the request
-  ifAcceptReqCurFloor: function() {
-    var accReqLs = Model.requestFilter();
-    return (accReqLs.length != 0) ? true : false;
-  },
-
   // accept proper request
   requestFilter: function() {
     var elev = Model.elevator;
@@ -131,27 +104,49 @@ var Model = {
     var pLs = Model.personList;
     var floor = elev.getFloor();
 
-    var acceptPIdLs = [];
-    if (elev.getMove() == Move.STOP) {
-      // when elev is stop
-      // accept all requests
-      for (var i = 0; i < rLs.length; i ++) {
-        if (pLs[rLs[i]].getCurFloor() == floor) {
-          acceptPIdLs.push(rLs[i]);
-        }
+    if (elev.isTop()) {
+      elev.setDir(Move.DOWN);
+    }
+
+    if (elev.isBottom()) {
+      elev.setDir(Move.UP);
+    }
+
+    var ls = [];
+
+    if (elev.getDir() == Move.STOP) {
+      //by default GO UP
+      var lsUp, lsDown;
+      lsUp = Model.requestFilterByDir(pLs, rLs, floor, Move.UP);
+      lsDown = Model.requestFilterByDir(pLs, rLs, floor, Move.DOWN);
+      if (lsUp.length != 0) {
+        elev.setDir(Move.UP);
+        return lsUp;
+      }else if (ls.length != 0) {
+        elev.setDir(Move.DOWN);
+        return lsDown;
+      } else {
+        elev.setDir(Move.STOP);
+        return ls;
       }
+
     } else {
-      // when elev is moving 
-      // accept req with same dir
-      for (var i = 0; i < rLs.length; i ++) {
-        var p = pLs[rLs[i]];
-        if (p.getCurFloor() == floor &&
-           elev.getDir() == p.getReqDir()) {
-          acceptPIdLs.push(rLs[i]);
-        }
+      ls = Model.requestFilterByDir(pLs, rLs, floor, elev.getDir());
+    }
+
+    return ls;
+  },
+
+  requestFilterByDir: function(pLs, rLs, floor, dir) {
+    var acceptIdLs = [];
+    for (var i = 0; i < rLs.length; i ++) {
+      var p = pLs[rLs[i]];
+      if (p.getCurFloor() == floor
+        && dir == p.getReqDir()) {
+          acceptIdLs.push(rLs[i]);
       }
     }
-    return acceptPIdLs;
+    return acceptIdLs;
   },
   
   // height
@@ -189,7 +184,7 @@ var Model = {
   setPersonList: function(pls) {
     Model.personList = pls;
   },
-  getFreePerson: function() {
+  getOneFreePerson: function() {
     var pls = Model.personList;
     var fls = Model.freeIdList;
     var ind = Util.randNum(Model.freeIdList.length);
@@ -253,13 +248,15 @@ var PersonModel = function(id, name, cur, dest) {
 
 };
 
-var ElevModel = function(floor, curDir, idLs) {
+var ElevModel = function(floor, curDir, idLs, height) {
 
   this.floor = floor,
   
   this.curDir = curDir,
   
   this.idList = idLs,
+
+  this.height = height,
 
   this.pIdListArrived = function(pLs) {
     var idLs = [];
@@ -288,24 +285,36 @@ var ElevModel = function(floor, curDir, idLs) {
   },
 
   // move one step
-  this.elevMove = function() {
-    this.floor += curDir;
+  this.move = function() {
+    this.floor += this.curDir;
     // log
-    if (curDir == Move.UP) {
+    if (this.curDir == Move.UP) {
       console.log("move up ..");
-    } else if (curDir == Move.DOWN) {
+    } else if (this.curDir == Move.DOWN) {
       console.log("move down ..");
     } else {
       console.log("stop ..");
     }
   },
 
-  this.getMove = function() {
+  this.isEmpty = function() {
+    return this.idList.length == 0;
+  },
+
+  this.isTop = function() {
+    return this.curFloor == this.height ;
+  },
+
+  this.isBottom = function() {
+    return this.curFloor == 1;
+  },
+
+  this.getDir = function() {
     return this.curDir;
   },
 
-  this.setMove = function(move) {
-    this.curDir = move;
+  this.setDir = function(dir) {
+    this.curDir = dir;
   },
 
   this.getIdList = function() {
@@ -324,8 +333,10 @@ var ElevModel = function(floor, curDir, idLs) {
   },
 
   this.rmIdFromList = function(id) {
-    if (! idList) { console.log("Error: person list is empty."); }
-    idList.remove(id);
+    if (! this.idList) { console.log("Error: person list is empty."); }
+    var ind = this.idList.indexOf(id);
+    if (ind == -1) { console.log("id not exist, this person is not in elevator.");}
+    else { this.idList.splice(ind, 1); }
   },
 
   this.getFloor = function() {
