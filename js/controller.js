@@ -1,20 +1,18 @@
 var Controller = {
   // 1 unit time of system movement
   oneStep: function() {
-    
+    // elevator move one step
     Controller.elevMove();
-    // open door
+    // elevator update direction
+    Controller.elevDirUpdate();
+    // add req
+    Controller.oneRandReq();
     // person leave
     Controller.elevPassLeave();
-    // add req
-    // update waitlist
-    Controller.oneRandReq();
     // person come in
-    // update waitlist
     Controller.elevPassGetIn();
-
-    // update move direction
-    Controller.updateElevMove();
+    
+    //Controller.elevDirUpdate();
   },
 
   oneRandReq: function() {
@@ -46,6 +44,10 @@ var Controller = {
     Controller.updateViewMoveElev(Model.getElevator());
   },
 
+  elevDirUpdate: function() {
+    Model.elevDirUpdate();
+  },
+
   elevPassLeave: function() {
     // logic
     Model.elevPassLeave();
@@ -57,12 +59,11 @@ var Controller = {
   //  - update data 
   //  - update view
   elevPassGetIn: function() {
-    // logic
-    Model.elevPassGetIn();
-    // view
     var p = Model.getPersonList();
-    var getInIdLs = Model.pIdListGetIn();
-    // var f = Model.getElevatorFloor();
+    var getInIdLs = Model.requestFilter();
+    // logic
+    Model.elevPassGetIn(getInIdLs);
+    // view
     Controller.updateViewRmWaiting(p, getInIdLs);
   },
 

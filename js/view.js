@@ -55,7 +55,7 @@ var WaitView = {
     var p = document.createElement("div");
     p.id = "id_" + person.getId();
     p.className = "wait-person div-row";
-    p.innerHTML = person.getName();
+    p.innerHTML = person.getId() + ":" +person.getName();
     waitArea.appendChild(p);
   },
 
