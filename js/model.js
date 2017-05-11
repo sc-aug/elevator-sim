@@ -43,8 +43,17 @@ var Model = {
 
   elevDirUpdate: function() {
     var e = Model.elevator;
+    var pLs = Model.personList;
 
     if (! e.isEmpty()) {
+      var inElevIds = e.getIdList();
+      var dir;
+      if (inElevIds.the == 0) {
+        dir = 0;
+      } else {
+        dir = pLs[inElevIds[0]].getReqDir();
+      }
+      e.setDir(dir);
       return;
     } else { // elevator is empty
       
@@ -143,20 +152,31 @@ var Model = {
     var pLs = Model.personList;
     var floor = elev.getFloor();
 
-    var ls = Model.reqFilterCurFloor(pLs, rLs, floor);
-    ls = Model.reqFilterByDir(pLs, ls, elev.getDir());
-    return ls;
-  },
+    var dir = elev.getDir();
+    if (dir == Move.STOP) {
+      dir = Move.UP;
+    }
 
-  reqFilterByDir: function(pLs, rLs, dir) {
-    var ls = [];
-    for (var i = 0; i < rLs.length; i ++) {
-      var p = pLs[rLs[i]];
-      if (dir == p.getReqDir()) {
-          ls.push(rLs[i]);
+    var upCurFLs = Model.reqFilterCurFloorUp(pLs, rLs, floor);
+    var downCurFLs = Model.reqFilterCurFloorDown(pLs, rLs, floor);
+    if (dir == Move.UP) {
+      if (upCurFLs.length != 0) {
+        return upCurFLs;
+      }
+      if (downCurFLs.length != 0) {
+        return downCurFLs;
       }
     }
-    return ls;
+    if (dir == Move.DOWN) {
+      if (downCurFLs.length != 0) {
+        return downCurFLs;
+      }
+      if (upCurFLs.length != 0) {
+        return upCurFLs;
+      }
+    }
+
+    return [];
   },
 
   // req at floor great than curFloor

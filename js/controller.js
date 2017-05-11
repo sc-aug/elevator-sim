@@ -9,10 +9,13 @@ var Controller = {
     Controller.oneRandReq();
     // person leave
     Controller.elevPassLeave();
+
+    Controller.elevDirUpdate();
     // person come in
     Controller.elevPassGetIn();
-    
-    //Controller.elevDirUpdate();
+
+    Controller.elevDirUpdate();
+
   },
 
   oneRandReq: function() {
