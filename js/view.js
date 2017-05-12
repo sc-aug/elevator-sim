@@ -54,15 +54,42 @@ var WaitView = {
     var waitArea = document.getElementById("wait_f_" + person.getCurFloor());
     var p = document.createElement("div");
     p.id = "id_" + person.getId();
-    p.className = "wait-person div-row";
+    p.className = "person div-row";
     p.innerHTML = person.getId() + ":" +person.getName();
     waitArea.appendChild(p);
   },
 
-  rmPersonFromWaiting: function(person) {
+  rmPersonWaitArea: function(person) {
     var waitArea = document.getElementById("wait_f_" + person.getCurFloor());
     var elem = document.getElementById("id_" + person.getId());
     waitArea.removeChild(elem);
   }
 
+}
+
+var ElevView = {
+  addPersonElev: function(person) {
+    var elev = document.getElementById("simu-box");
+    var p = document.createElement("div");
+    p.id = "id_" + person.getId();
+    p.className = "person div-row";
+    p.innerHTML = person.getId() + ":" +person.getName();
+    elev.appendChild(p);
+  },
+
+  rmPersonElev: function(person) {
+    var elev = document.getElementById("simu-box");
+    var p = document.getElementById("id_" + person.getId());
+    elev.removeChild(p);
+  }
+
+}
+
+var LogView = {
+  arriveLog: function(person) {
+    var logArea = document.getElementById("simu-log");
+    logArea.innerHTML += person.getId() + ":" +person.getName()
+              + "\t- arrived - floor: " + person.getCurFloor() + "\n";
+    logArea.scrollTop = logArea.scrollHeight;
+  }
 }

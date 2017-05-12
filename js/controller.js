@@ -52,10 +52,13 @@ var Controller = {
   },
 
   elevPassLeave: function() {
+    var p = Model.getPersonList();
+    var arriveIdLs = Model.pIdListArrived();
     // logic
-    Model.elevPassLeave();
+    Model.elevPassLeave(arriveIdLs);
     // view
-    // [next]
+    Controller.updateViewRmFromElev(p, arriveIdLs);
+    Controller.updateViewArriveLog(p, arriveIdLs);
   },
 
   // when passengers get into elevator
@@ -68,6 +71,7 @@ var Controller = {
     Model.elevPassGetIn(getInIdLs);
     // view
     Controller.updateViewRmWaiting(p, getInIdLs);
+    Controller.updateViewAddToElev(p, getInIdLs);
   },
 
   updateElevMove: function() {
@@ -115,10 +119,27 @@ var Controller = {
     }
   },
 
-  updateViewRmWaiting: function(pLs, arriveIdLs) {
+  updateViewRmWaiting: function(pLs, getInIdLs) {
+    for (var i = 0; i < getInIdLs.length; i ++) {
+      WaitView.rmPersonWaitArea(pLs[getInIdLs[i]]);
+    }
+  },
+
+  updateViewAddToElev: function(pLs, getInIdLs) {
+    for (var i = 0; i < getInIdLs.length; i ++) {
+      ElevView.addPersonElev(pLs[getInIdLs[i]]);
+    }
+  },
+
+  updateViewRmFromElev: function(pLs, arriveIdLs) {
     for (var i = 0; i < arriveIdLs.length; i ++) {
-      WaitView.rmPersonFromWaiting(pLs[arriveIdLs[i]]);
+      ElevView.rmPersonElev(pLs[arriveIdLs[i]]);
+    }
+  },
+
+  updateViewArriveLog: function(pLs, arriveIdLs) {
+    for (var i = 0; i < arriveIdLs.length; i ++) {
+      LogView.arriveLog(pLs[arriveIdLs[i]]);
     }
   }
-
 }

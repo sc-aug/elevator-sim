@@ -58,6 +58,8 @@ input {
 #simu-shaft, #simu-waitlist {
 }
 #simu-box-area, #simu-log-area, #simu-panel-area {
+/*  height: 100%;
+  width: 30%;*/
   margin-left: 10px;
 }
 #simu-box {
@@ -65,12 +67,6 @@ input {
   height: 97px;
   width: 200px;
   border-radius: 3px;
-}
-#simu-log {
-  height: 100%;
-  width: 100%;
-}
-#simu-panel {
 }
 #foot-wrap {
   margin-left: auto;
@@ -94,7 +90,9 @@ input {
   text-align: center;
 }
 .elev-on {
-  background-color: #1199ee;
+  background-color: #ccddff;
+  border-style: solid;
+  border-width: 1px;
 }
 .elev-off {
   background-color: #cccccc;
@@ -103,13 +101,14 @@ input {
   /*background-color: #cccccc;*/
   width: 600px;
 }
-.wait-person {
+.person {
   background-color: #E74C3C;;
   height: 16px;
-  padding: 0px 2px 0px 2px;
-  margin: 0px 1px 0px 1px;
+  padding: 1px 2px 1px 2px;
+  margin: 1px 1px 1px 1px;
   text-align: center;
   vertical-align: middle;
   border-radius: 2px;
   font-size: 10px;
+  color: white;
 }
