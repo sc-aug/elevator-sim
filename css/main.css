@@ -1,0 +1,116 @@
+body {
+  width: 720px;
+  padding: 10px 10px 10px 10px;
+  margin-left:auto;
+  margin-right:auto;
+  /* bg */
+  background-color: #e6e6e6;
+  /* font */
+  font-family: Consolas, monaco, monospace;
+  font-style: normal;
+  font-variant: normal;
+}
+hr {
+  border: none;
+  border-top:1px dotted grey;
+  width:100%;
+}
+select, input {
+  margin-top: 5px;
+  text-align-last: center;
+  width: 130px;
+}
+input {
+  border-radius: 3px;
+  border-width: 0px;
+  background-color: white;
+}
+#content-wrap {
+  width: 700px;
+  padding: 10px 10px 10px 10px;
+  background-color: #EAEDED;
+  border: 1px dotted gray;
+  border-radius: 10px;
+  /* for IE */
+  filter: alpha(opacity=80);
+  /* CSS3 standard */
+  opacity:0.8;
+}
+#header-wrap {
+  margin-left: auto;
+  margin-right: auto;
+  width: 400px;
+}
+#version {
+  align: right;
+}
+#main-wrap {
+  overflow:hidden; /* cancel float in child*/
+  margin-left: auto;
+  margin-right: auto;
+  width: 690px;
+}
+#simu-upper, #simu-mid, #simu-lower{
+  overflow: hidden;
+  width: 100%;
+  padding: 10px;
+}
+#simu-shaft, #simu-waitlist {
+}
+#simu-box-area, #simu-log-area, #simu-panel-area {
+  margin-left: 10px;
+}
+#simu-box {
+  background-color: white;
+  height: 97px;
+  width: 200px;
+  border-radius: 3px;
+}
+#simu-log {
+  height: 100%;
+  width: 100%;
+  resize: none;
+}
+#simu-panel {
+}
+#foot-wrap {
+  margin-left: auto;
+  margin-right: auto;
+}
+.div-ctrl {
+  margin: 0px 1px 0px 1px;
+}
+.div-row {
+  float: left;
+  display: inline;
+}
+.elev-on, .elev-off, .wait {
+  height: 20px;
+  margin: 0px 5px 2px 5px;
+  border-radius: 3px;
+}
+.elev-on, .elev-off {
+  width: 50px;
+  font-size: 13px;
+  text-align: center;
+}
+.elev-on {
+  background-color: #1199ee;
+}
+.elev-off {
+  background-color: #cccccc;
+}
+.wait {
+  /*background-color: #cccccc;*/
+  width: 600px;
+}
+.wait-person {
+  background-color: #E74C3C;;
+  height: 16px;
+  padding: 0px 2px 0px 2px;
+  margin: 0px 1px 0px 1px;
+  text-align: center;
+  vertical-align: middle;
+  border-radius: 2px;
+  font-size: 10px;
+}
