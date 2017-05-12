@@ -69,11 +69,9 @@ input {
 #simu-log {
   height: 100%;
   width: 100%;
-  border-radius: 3px;
+  resize: none;
 }
 #simu-panel {
-  width: 50%;
-  margin: 0 auto;
 }
 #foot-wrap {
   margin-left: auto;
