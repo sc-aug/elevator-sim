@@ -20,8 +20,7 @@ var Model = {
   },
 
   // Leave elevater
-  elevPassLeave: function() {
-    var arriveIdLs = Model.pIdListArrived();
+  elevPassLeave: function(arriveIdLs) {
     console.log("arrived p ID: ", arriveIdLs);
     Model.elevator.rmIdsByArrive(arriveIdLs); // remove id from elevator
     Model.updateDataForArrive(arriveIdLs); // floor info & add to freelist
