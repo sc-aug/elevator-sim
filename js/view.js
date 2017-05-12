@@ -87,9 +87,17 @@ var ElevView = {
 
 var LogView = {
   arriveLog: function(person) {
-    var logArea = document.getElementById("simu-log");
-    logArea.innerHTML += person.getId() + ":" +person.getName()
+    var textarea = document.getElementById("text-arrive");
+    textarea.innerHTML += person.getId() + ":" +person.getName()
               + "\t- arrived - floor: " + person.getCurFloor() + "\n";
-    logArea.scrollTop = logArea.scrollHeight;
+    textarea.scrollTop = textarea.scrollHeight;
+  },
+
+  reqLog: function(person) {
+    var textarea = document.getElementById("text-req");
+    textarea.innerHTML += person.getId() + ":" +person.getName()
+              + "\t- request - " + person.getCurFloor() + " -> "
+              + person.getDestFloor() + "\n";
+    textarea.scrollTop = textarea.scrollHeight;
   }
 }

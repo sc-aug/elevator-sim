@@ -38,6 +38,7 @@ var Controller = {
     Model.addIdToReqLs(freePerson.getId());
     // show this waiting person
     WaitView.addPersonWaitArea(freePerson);
+    LogView.reqLog(freePerson);
   },
 
   elevMove: function() {

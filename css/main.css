@@ -1,5 +1,5 @@
 body {
-  width: 720px;
+  width: 800px;
   padding: 10px 10px 10px 10px;
   margin-left:auto;
   margin-right:auto;
@@ -26,7 +26,7 @@ input {
   background-color: white;
 }
 #content-wrap {
-  width: 700px;
+  width: 750px;
   padding: 10px 10px 10px 10px;
   background-color: #EAEDED;
   border: 1px dotted gray;
@@ -48,24 +48,20 @@ input {
   overflow:hidden; /* cancel float in child*/
   margin-left: auto;
   margin-right: auto;
-  width: 690px;
+  width: 740px;
 }
 #simu-upper, #simu-mid, #simu-lower{
   overflow: hidden;
   width: 100%;
   padding: 10px;
 }
-#simu-shaft, #simu-waitlist {
-}
-#simu-box-area, #simu-log-area, #simu-panel-area {
-/*  height: 100%;
-  width: 30%;*/
+#simu-box-area, #simu-log-req, #simu-log-arrive, #simu-panel-area {
   margin-left: 10px;
 }
 #simu-box {
   background-color: white;
   height: 97px;
-  width: 200px;
+  width: 190px;
   border-radius: 3px;
 }
 #foot-wrap {
@@ -78,6 +74,12 @@ input {
 .div-row {
   float: left;
   display: inline;
+}
+.simu-log {
+  background-color: white;
+  height: 100%;
+  width: 100%;
+  resize: none;
 }
 .elev-on, .elev-off, .wait {
   height: 20px;
@@ -99,7 +101,7 @@ input {
 }
 .wait {
   /*background-color: #cccccc;*/
-  width: 600px;
+  /*width: 600px;*/
 }
 .person {
   background-color: #E74C3C;;
