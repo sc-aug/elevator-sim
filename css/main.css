@@ -58,6 +58,10 @@ input {
 #simu-box-area, #simu-log-req, #simu-log-arrive, #simu-panel-area {
   margin-left: 10px;
 }
+#simu-shaft, #simu-waitlist {
+  font-size: 12px;
+  margin-right: 10px; 
+}
 #simu-box {
   background-color: white;
   height: 97px;
