@@ -2,43 +2,41 @@ var Controller = {
   // 1 unit time of system movement
   oneStep: function() {
     // elevator move one step
-    Controller.elevMove();
-    // elevator update direction
-    Controller.elevDirUpdate();
+    Controller.elevMove(); // ok
+    // queue - remove req in queue
+    Controller.reqDequeue(); // ok
     // add req
-    Controller.oneRandReq();
+    Controller.oneRandReq(); // 
+    // update elev direction
+    Controller.elevDirUpdate();
     // person leave
-    Controller.elevPassLeave();
-
-    Controller.elevDirUpdate();
+    Controller.elevPassLeave(); // 
     // person come in
-    Controller.elevPassGetIn();
-
-    Controller.elevDirUpdate();
-
+    Controller.elevPassGetIn(); // 
   },
 
   oneRandReq: function() {
-
     // no people left for requesting
-    if (Model.emptyFreeList()) return;
-
+    if (Model.isIdleLsEmpty()) return;
     var height = Model.getHeight();
 
     // person
-    var freePerson = Model.getOneFreePerson();
-
-    // remove person from free list
-    Model.rmFromFreeLs(freePerson.getId(), 1);
+    var idlePerson = Model.getOneIdlePerson();
     // get destination floor
-    var destFloor = Util.randFloor(height, freePerson.getCurFloor());
+    var destFloor = Util.randFloor(height, idlePerson.getCurFloor());
     // set person destination
-    freePerson.setDestFloor(destFloor);
-    // add this id to req list
-    Model.addIdToReqLs(freePerson.getId());
+    idlePerson.setDestFloor(destFloor);
+    
+    // remove person from free list
+    Model.rmFromIdleLs(idlePerson.getId());
+    // update request queue
+    ReqModel.addReq(idlePerson);
+    // add this id to request queue
+    ReqModel.addIdToReqList(idlePerson);
     // show this waiting person
-    WaitView.addPersonWaitArea(freePerson);
-    LogView.reqLog(freePerson);
+    WaitView.addPersonWaitArea(idlePerson);
+
+    LogView.reqLog(idlePerson);
   },
 
   elevMove: function() {
@@ -53,26 +51,31 @@ var Controller = {
   },
 
   elevPassLeave: function() {
-    var p = Model.getPersonList();
-    var arriveIdLs = Model.pIdListArrived();
-    // logic
+    var pLs = Model.getPersonLs();
+    var arriveIdLs = Model.pIdLsArrived();
+    // logic - model
     Model.elevPassLeave(arriveIdLs);
     // view
-    Controller.updateViewRmFromElev(p, arriveIdLs);
-    Controller.updateViewArriveLog(p, arriveIdLs);
+    Controller.updateViewRmFromElev(pLs, arriveIdLs);
+    Controller.updateViewArriveLog(pLs, arriveIdLs);
+  },
+
+  reqDequeue: function() {
+    var e = Model.getElevator();
+    ReqModel.rmReq(e);
   },
 
   // when passengers get into elevator
   //  - update data 
   //  - update view
   elevPassGetIn: function() {
-    var p = Model.getPersonList();
-    var getInIdLs = Model.requestFilter();
+    var pLs = Model.getPersonLs();
+    var getInIdLs = ReqModel.getInFilter();
     // logic
     Model.elevPassGetIn(getInIdLs);
     // view
-    Controller.updateViewRmWaiting(p, getInIdLs);
-    Controller.updateViewAddToElev(p, getInIdLs);
+    Controller.updateViewRmWaiting(pLs, getInIdLs);
+    Controller.updateViewAddToElev(pLs, getInIdLs);
   },
 
   updateElevMove: function() {
@@ -84,24 +87,27 @@ var Controller = {
   //  - init view
   initSimu: function(height, num) {
     // Models
-    var elev, personLs, reqLs, inElevIdLs, freeIdLs;
+    var elev, personLs, reqLs, inElevIdLs, idleIdLs;
     
     // inits
     personLs = [];
     reqLs = [];
     inElevIdLs = [];
-    freeIdLs = [];
+    idleIdLs = [];
     for (var i = 0; i < num; i ++) {
       var name = Util.genName(i);
       personLs[i] = new PersonModel(i, name, 1, 1);
-      freeIdLs[i] = i;
+      idleIdLs[i] = i;
     }
 
     //init elev
     elev = new ElevModel(1, Move.STOP, inElevIdLs, height);
+
+    //init Queue
+    ReqModel.initQueue();
     
     //init waitlist
-    Model.init(height, elev, personLs, reqLs, freeIdLs);
+    Model.init(height, elev, personLs, reqLs, idleIdLs);
 
     // Views
     ShaftView.genShaft(height);
