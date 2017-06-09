@@ -10,7 +10,7 @@ PriorityQueue.prototype.add = function(value) {
 }
 
 PriorityQueue.prototype.remove = function(value) {
-  if (this.data.includes(value)) return;
+  if (!this.data.includes(value)) return;
   var i = this.data.indexOf(value);
   this.data.splice(i, 1);
 }
