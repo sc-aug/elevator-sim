@@ -12,8 +12,8 @@ function init() {
   Controller.initSimu(10,20);
 
   // add request
-  var randReqBtn = document.getElementById("randReqBtn");
-  randReqBtn.onclick = handleRandReqBtn;
+  // var randReqBtn = document.getElementById("randReqBtn");
+  // randReqBtn.onclick = handleRandReqBtn;
 
   // manual
   var oneStepBtn = document.getElementById("oneStepBtn");
