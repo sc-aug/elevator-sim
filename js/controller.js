@@ -6,13 +6,13 @@ var Controller = {
     // queue - remove req in queue
     Controller.reqDequeue(); // ok
     // add req
-    Controller.oneRandReq(); // 
+    Controller.oneRandReq(); // ok
     // update elev direction
-    Controller.elevDirUpdate();
+    Controller.elevDirUpdate(); // ok
     // person leave
-    Controller.elevPassLeave(); // 
+    Controller.elevPassLeave(); // ok
     // person come in
-    Controller.elevPassGetIn(); // 
+    Controller.elevPassGetIn(); //
   },
 
   oneRandReq: function() {
@@ -27,15 +27,14 @@ var Controller = {
     // set person destination
     idlePerson.setDestFloor(destFloor);
     
-    // remove person from free list
+    // remove person from idle list
     Model.rmFromIdleLs(idlePerson.getId());
     // update request queue
-    ReqModel.addReq(idlePerson);
+    ReqModel.addToReqQueue(idlePerson);
     // add this id to request queue
-    ReqModel.addIdToReqList(idlePerson);
+    ReqModel.addIdToReqLs(idlePerson);
     // show this waiting person
     WaitView.addPersonWaitArea(idlePerson);
-
     LogView.reqLog(idlePerson);
   },
 

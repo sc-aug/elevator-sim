@@ -35,6 +35,7 @@ var Model = {
     console.log("get-in p ID: ", getInIdLs);
     Model.addIdsToElev(getInIdLs);
     Model.rmReqIdsByGetIn(getInIdLs); // remove id from req list.
+    ReqModel.waitQueueToElevQueue(getInIdLs);
   },
 
   elevMove: function() {
@@ -45,33 +46,66 @@ var Model = {
     var e = Model.getElevator();
     var dir = e.getDir();
     var floor = e.getFloor();
+    var upPeek = UpQueue.peek();
+    var downPeek = DownQueue.peek();
+    var upReqPeek = ReqUpQueue.peek();
+    var downReqPeek = ReqDownQueue.peek();
 
     if (dir == Move.UP) {
-      if (floor > UpQueue.peek()) {
-        if (UpQueue.empty() && DownQueue.empty()) {
+      if (floor > upPeek || upPeek == -1) {
+        if (upReqPeek[0] == -1 && downReqPeek[0] == -1) {
           e.setDir(Move.STOP);
-        } else {
+        }
+        if (upReqPeek[0] != -1 && downReqPeek[0] == -1 && floor > upReqPeek[0]) {
+          e.setDir(Move.DOWN);
+        }
+        if (upReqPeek[0] == -1 && downReqPeek[0] != -1 && floor >= downReqPeek[0]) {
+          e.setDir(Move.DOWN);
+        }
+        if (upReqPeek[0] != -1 && downReqPeek[0] != -1 && floor > upReqPeek[0] && floor >= downReqPeek[0]) {
           e.setDir(Move.DOWN);
         }
       }
-    } else if (dir == Move.Down) {
-      if (floor < DownQueue.peek()) {
-        if (UpQueue.empty() && DownQueue.empty()) {
+    } else if (dir == Move.DOWN) {
+      if (floor < downPeek || downPeek == -1) {
+        if (upReqPeek[0] == -1 && downReqPeek[0] == -1) {
           e.setDir(Move.STOP);
-        } else {
+        }
+        if (upReqPeek[0] != -1 && downReqPeek[0] == -1 && floor <= upReqPeek[0]) {
+          e.setDir(Move.UP);
+        }
+        if (upReqPeek[0] == -1 && downReqPeek[0] != -1 && floor < downReqPeek[0]) {
+          e.setDir(Move.UP);
+        }
+        if (upReqPeek[0] != -1 && downReqPeek[0] != -1 && floor <= upReqPeek[0] && floor < downReqPeek[0]) {
           e.setDir(Move.UP);
         }
       }
     } else {
-      if (!UpQueue.empty() && DownQueue.empty()) {
-        if (floor > UpQueue.peek()) e.setDir(Move.DOWN);
-        else e.setDir(Move.UP);
+      if (upReqPeek[0] == -1 && downReqPeek[0] == -1) {
+        e.setDir(Move.STOP);
       }
-      if (UpQueue.empty() && !DownQueue.empty()) {
-        if (floor < DownQueue.peek()) e.setDir(Move.UP);
+      if (upReqPeek[0] != -1 && downReqPeek[0] == -1) {
+        if (floor <= upReqPeek[0]) e.setDir(Move.UP);
         else e.setDir(Move.DOWN);
       }
+      if (upReqPeek[0] == -1 && downReqPeek[0] != -1) {
+        if (floor >= downReqPeek[0]) e.setDir(Move.DOWN);
+        else e.setDir(Move.UP);
+      }
+      if (upReqPeek[0] != -1 && downReqPeek[0] != -1) {
+        var up = Math.abs(floor - upReqPeek[0]);
+        var down = Math.abs(floor - downReqPeek[0]);
+        if (up < down) {
+          if (upReqPeek[0] >= floor) e.setDir(Move.UP);
+          else e.setDir(Move.DOWN);
+        } else {
+          if (downReqPeek[0] <= floor) e.setDir(Move.DOWN);
+          else e.setDir(Move.UP);
+        }
+      }
     }
+
   },
 
   assignElevDir: function(lsUp, lsDown, lsCurUp, lsCurDown, dir, elev) {
@@ -153,8 +187,9 @@ var Model = {
   isReqEmpty: function() {
     return Model.reqList.length == 0;
   },
-  addIdToReqQueue: function(id, dir) {
-    Model.reqList.push(id);
+
+  addIdToReqLs: function(p) {
+    Model.reqList.push(p.getId());
     console.log("req list: ", Model.reqList);
   },
 
