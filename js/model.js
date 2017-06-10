@@ -108,22 +108,6 @@ var Model = {
 
   },
 
-  assignElevDir: function(lsUp, lsDown, lsCurUp, lsCurDown, dir, elev) {
-    if (dir == Move.UP) {
-      if (lsUp.length == 0) {
-        if (lsCurUp.length == 0) {
-          elev.setDir(Move.DOWN);
-        }
-      }
-    } else { // dir == Move.DOWN
-      if (lsDown.length == 0) {
-        if (lsCurDown == 0) {
-          elev.setDir(Move.UP);
-        }
-      }
-    }
-  },
-
   pIdLsArrived: function() {
     var elev = Model.getElevator();
     return elev.pIdLsArrived(Model.personList);
@@ -196,9 +180,6 @@ var Model = {
   // person list
   getPersonLs: function() {
     return Model.personList;
-  },
-  setPersonLs: function(pls) {
-    Model.personList = pls;
   },
   getOneIdlePerson: function() {
     var pLs = Model.personList;
@@ -298,10 +279,6 @@ var ElevModel = function(floor, curDir, idLs, height) {
     var ind = this.passIdList.indexOf(id);
     if (ind == -1) { console.log("id not exist, this person is not in elevator.");}
     else { this.passIdList.splice(ind, 1); }
-  },
-
-  this.passengerIn = function(pIdLs) {
-    this.passIdList.concat(pIdLs);
   },
 
   // move one step
