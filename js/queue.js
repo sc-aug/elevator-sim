@@ -4,7 +4,6 @@ function PriorityQueue() {
 }
 
 PriorityQueue.prototype.add = function(value) {
-  if (this.data.includes(value)) return;
   for (var i = this.data.length-1; i >=0 && value < this.data[i]; i --);
   this.data.splice(i+1, 0, value);
 }
@@ -29,4 +28,8 @@ PriorityQueue.prototype.size = function() {
 
 PriorityQueue.prototype.empty = function() {
   return this.data.length == 0;
+}
+
+PriorityQueue.prototype.includes = function(value) {
+  return this.data.includes(value);
 }
