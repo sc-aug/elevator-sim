@@ -63,6 +63,10 @@ ReqPriorityQueue.prototype.peek = function() {
   return this.req[this.req.length-1];
 }
 
+ReqPriorityQueue.prototype.first = function() {
+  return this.req[0];
+}
+
 ReqPriorityQueue.prototype.size = function() {
   return this.req.length;
 }

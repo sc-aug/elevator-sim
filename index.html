@@ -42,16 +42,25 @@
         </div>
         <div id="simu-log-arrive" class="div-row">
         Arrive Logs
-          <textarea id="text-arrive" rows="7" cols="5" class="simu-log"></textarea>
+          <textarea id="text-arrive" rows="7" cols="5" class="simu-log" readonly></textarea>
         </div>
         <div id="simu-log-req" class="div-row">
         Request Logs
-          <textarea id="text-req" rows="7" cols="5" class="simu-log"></textarea>
+          <textarea id="text-req" rows="7" cols="5" class="simu-log" readonly></textarea>
         </div>
         <div id="simu-panel-area" class="div-row">
-        Operation
+        Operations
           <div class="div-ctrl">
             <input type="button" id="oneStepBtn" value="Manual One Step">
+          </div>
+          <div class="div-ctrl">
+            <input type="button" id="simuBtn" value="Auto Simulation">
+          </div>
+          <div class="div-ctrl">
+            <input type="button" id="pauseBtn" value="Pause">
+          </div>
+          <div class="div-ctrl">
+            <input type="button" id="cleanBtn" value="Clean">
           </div>
           <!--
           <div class="div-ctrl">

@@ -156,7 +156,7 @@ var ReqUpQueue = {
   },
   peek: function() {
     if (ReqUpQueue.empty()) return [-1, -1];
-    return ReqUpQueue.q.peek();
+    return ReqUpQueue.q.first();
   },
   size: function() {
     return ReqUpQueue.q.size();
