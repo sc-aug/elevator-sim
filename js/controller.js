@@ -109,6 +109,9 @@ var Controller = {
     Model.init(height, elev, personLs, reqLs, idleIdLs);
 
     // Views
+    // remove table
+    View.clean();
+
     ShaftView.genShaft(height);
     ShaftView.update(height, elev.getFloor());
     WaitView.genWaitingArea(height);
